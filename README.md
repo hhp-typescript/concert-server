@@ -5,6 +5,10 @@
 - 사용자는 좌석예약 시에 미리 충전한 잔액을 이용합니다.
 - 좌석 예약 요청시에, 결제가 이루어지지 않더라도 일정 시간동안 다른 유저가 해당 좌석에 접근할 수 없도록 합니다.
 
+## 프로젝트 일정
+
+[프로젝트 일정](https://github.com/orgs/hhp-typescript/projects/6)
+
 ## 플로우 차트
 
 ![alt text](docs/flowChart.png)
