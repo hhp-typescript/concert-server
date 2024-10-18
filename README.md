@@ -9,6 +9,10 @@
 
 [프로젝트 일정](https://github.com/orgs/hhp-typescript/projects/6)
 
+## API 명세서
+
+![alt text](docs/localhost_3000_api.png)
+
 ## 플로우 차트
 
 ![alt text](docs/flowChart.png)
@@ -31,8 +35,6 @@
 ## ERD
 
 ![alt text](docs/erd.png)
-
-## API 명세서
 
 ### Mock API 명세서
 
