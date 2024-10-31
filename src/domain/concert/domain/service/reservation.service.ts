@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { IReservationRepository } from '../repository/i.reservation.repository';
 import {
-  CONCERT_REPOSITORY,
+  CONCERT_DATE_REPOSITORY,
   RESERVATION_REPOSITORY,
   SEAT_REPOSITORY,
 } from 'src/common/const';
@@ -91,5 +91,13 @@ export class ReservationService {
       this.seatRepo.saveSeats(updatedSeats),
       this.concertDateRepo.saveConcertDate(updatedConcertDate),
     ]);
+  }
+
+  async updateReservationStatusWithOptimisticLock(
+    reservation: Reservation,
+  ): Promise<Reservation> {
+    return await this.reservationRepo.updateReservationStatusWithOptimisticLock(
+      reservation,
+    );
   }
 }
