@@ -5,14 +5,16 @@ import { ReservationService } from 'src/domain/concert/domain/service/reservatio
 import { UserService } from 'src/domain/user/domain/service/user.service';
 import { Transactional } from 'src/common/lib/decorator/transaction.decorator';
 import { InjectTransactionManager } from 'src/common/lib/decorator/inject.manager.decorator';
+import { NotFoundException } from 'src/common/exception';
+import { ReservationStatus } from 'src/domain/concert/domain/model/reservation';
 
 @Injectable()
 export class PaymentFacade {
   constructor(
     private readonly paymentService: PaymentService,
     private readonly userService: UserService,
-    private readonly pointHistoryService: PointHistoryService, // 포인트 관련 서비스
-    private readonly reservationService: ReservationService, // 예약 관련 서비스
+    private readonly pointHistoryService: PointHistoryService,
+    private readonly reservationService: ReservationService,
   ) {}
 
   @Transactional()
@@ -21,8 +23,7 @@ export class PaymentFacade {
     'pointHistoryService',
     'reservationService',
   ])
-  // 결제 처리
-  async processPayment(
+  async payment(
     reservationId: number,
     userId: number,
     amount: number,
@@ -30,13 +31,23 @@ export class PaymentFacade {
     const reservation =
       await this.reservationService.getValidReservationById(reservationId);
 
+    if (!reservation) {
+      throw new NotFoundException('payment', '해당 예약을 찾을 수 없습니다.');
+    }
+
+    if (reservation.status === ReservationStatus.CONFIRMED) {
+      throw new Error('이미 결제 완료된 예약입니다.');
+    }
+
     reservation.confirm();
 
     const [payment, _] = await Promise.all([
-      this.paymentService.processPayment(reservationId, userId, amount),
+      this.paymentService.payment(reservationId, userId, amount),
       this.pointHistoryService.logUsage(userId, amount),
       this.userService.usePoint(userId, amount),
-      this.reservationService.updateReservation(reservation),
+      this.reservationService.updateReservationStatusWithOptimisticLock(
+        reservation,
+      ),
     ]);
 
     return payment;

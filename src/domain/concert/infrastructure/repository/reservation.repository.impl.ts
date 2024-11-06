@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from 'src/common/repository/base-repository';
+import { BaseRepository } from 'src/common/repository/base.repository';
 import { ReservationEntity } from '../entity/reservation.typeorm.entity';
 import { IReservationRepository } from '../../domain/repository/i.reservation.repository';
 import { EntityManager } from 'typeorm';
@@ -65,5 +65,27 @@ export class ReservationRepositoryImpl
     );
 
     await this.save(reservationEntities);
+  }
+
+  async updateReservationStatusWithOptimisticLock(
+    reservation: Reservation,
+  ): Promise<Reservation> {
+    const result = await this.manager
+      .createQueryBuilder()
+      .update(Reservation)
+      .set({
+        status: ReservationStatus.TEMPORARY,
+        version: () => `${reservation.version} + 1`,
+      })
+      .where('id = :id', { id: reservation.id })
+      .andWhere('version = :version', { version: reservation.version })
+      .returning('*')
+      .execute();
+
+    if (result.affected === 0) {
+      throw new Error('낙관적 락 충돌이 발생했습니다.');
+    }
+
+    return result.raw[0];
   }
 }
