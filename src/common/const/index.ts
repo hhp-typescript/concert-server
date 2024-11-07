@@ -1,2 +1,2 @@
 export * from './env.const';
-export * from './interface.const';
+export * from './inject.const';
