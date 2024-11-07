@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { WaitingQueueEntity } from '../entity/waiting.queue.typeorm.entity';
 import { IWaitingQueueRepository } from '../../domain/repository/i.waiting.queue.repository';
-import { BaseRepository } from 'src/common/repository/base-repository';
+import { BaseRepository } from 'src/common/infrastructure/repository/base.repository';
 import { InjectEntityManager } from '@nestjs/typeorm';
 import { EntityManager } from 'typeorm';
 import {
@@ -9,6 +9,8 @@ import {
   WaitingQueueStatus,
 } from '../../domain/model/waiting.queue';
 import { WaitingQueueMapper } from '../mapper/waiting.queue.mapper';
+import { REDIS_QUEUE_REPOSITORY } from 'src/common/const';
+import { IRedisQueueRepository } from '../../domain/repository/i.redis.queue.repository';
 
 @Injectable()
 export class WaitingQueueRepositoryImpl
@@ -18,9 +20,35 @@ export class WaitingQueueRepositoryImpl
   constructor(
     @InjectEntityManager()
     manager: EntityManager,
+    @Inject(REDIS_QUEUE_REPOSITORY)
+    private readonly redisQueueRepo: IRedisQueueRepository,
   ) {
     super(WaitingQueueEntity, manager);
   }
+
+  async issueToken(concertDateId: number) {
+    return await this.redisQueueRepo.issueToken(concertDateId);
+  }
+
+  async getWaitingTokenRank(
+    concertDateId: number,
+    token: string,
+  ): Promise<number | null> {
+    return await this.redisQueueRepo.getWaitingTokenRank(concertDateId, token);
+  }
+
+  async activateTokens(concertDateId: number, count: number): Promise<void> {
+    await this.activateTokens(concertDateId, count);
+  }
+
+  async isTokenActive(concertDateId: number, token: string): Promise<boolean> {
+    return await this.redisQueueRepo.isTokenActive(concertDateId, token);
+  }
+
+  async deleteToken(concertDateId: number, token: string): Promise<void> {
+    await this.redisQueueRepo.deleteToken(concertDateId, token);
+  }
+
   // 대기열 저장
   async saveQueue(queue: WaitingQueue): Promise<WaitingQueue> {
     const entity = WaitingQueueMapper.toEntity(queue);
