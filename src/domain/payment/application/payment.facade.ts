@@ -1,12 +1,14 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { PaymentService } from '../domain/service/payment.service';
 import { PointHistoryService } from 'src/domain/user/domain/service/point.history.service';
 import { ReservationService } from 'src/domain/concert/domain/service/reservation.service';
 import { UserService } from 'src/domain/user/domain/service/user.service';
-import { Transactional } from 'src/common/lib/decorator/transaction.decorator';
-import { InjectTransactionManager } from 'src/common/lib/decorator/inject.manager.decorator';
-import { NotFoundException } from 'src/common/exception';
+import { NotFoundException } from 'src/common/domain/exception';
 import { ReservationStatus } from 'src/domain/concert/domain/model/reservation';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource, EntityManager } from 'typeorm';
+import { IPaymentEventPublisher } from '../domain/event/i.payment.event.publisher';
+import { ConflictException } from 'src/common/domain/exception/conflict.exception';
 
 @Injectable()
 export class PaymentFacade {
@@ -15,19 +17,13 @@ export class PaymentFacade {
     private readonly userService: UserService,
     private readonly pointHistoryService: PointHistoryService,
     private readonly reservationService: ReservationService,
+    @Inject('IPaymentPublisher')
+    private readonly paymentEventPublisher: IPaymentEventPublisher,
+    @InjectDataSource()
+    private readonly dataSource: DataSource,
   ) {}
 
-  @Transactional()
-  @InjectTransactionManager([
-    'userService',
-    'pointHistoryService',
-    'reservationService',
-  ])
-  async payment(
-    reservationId: number,
-    userId: number,
-    amount: number,
-  ): Promise<void> {
+  async payment(reservationId: number, userId: number, amount: number) {
     const reservation =
       await this.reservationService.getValidReservationById(reservationId);
 
@@ -36,19 +32,37 @@ export class PaymentFacade {
     }
 
     if (reservation.status === ReservationStatus.CONFIRMED) {
-      throw new Error('이미 결제 완료된 예약입니다.');
+      throw new ConflictException('payment', '이미 결제 완료된 예약입니다.');
     }
 
     reservation.confirm();
 
-    const [payment, _] = await Promise.all([
-      this.paymentService.payment(reservationId, userId, amount),
-      this.pointHistoryService.logUsage(userId, amount),
-      this.userService.usePoint(userId, amount),
-      this.reservationService.updateReservationStatusWithOptimisticLock(
-        reservation,
-      ),
-    ]);
+    const payment = await this.dataSource.transaction(
+      async (entityManager: EntityManager) => {
+        const [payment, _] = await Promise.all([
+          this.paymentService.payment(
+            reservationId,
+            userId,
+            amount,
+            entityManager,
+          ),
+          this.pointHistoryService.logUsage(userId, amount, entityManager),
+          this.userService.usePoint(userId, amount, entityManager),
+          this.reservationService.updateReservationStatusWithOptimisticLock(
+            reservation,
+            entityManager,
+          ),
+        ]);
+
+        return payment;
+      },
+    );
+
+    this.paymentEventPublisher.publishPaymentCompleted(
+      reservationId,
+      userId,
+      amount,
+    );
 
     return payment;
   }
