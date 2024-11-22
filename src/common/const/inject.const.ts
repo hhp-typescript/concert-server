@@ -9,6 +9,7 @@ export const CONCERT_DATE_REPOSITORY = 'IConcertDate';
 export const WAITING_QUEUE_REPOSITORY = 'IWaitingQueue';
 export const REDIS_QUEUE_REPOSITORY = 'IRedisQeueu';
 export const REDIS_CLIENT = 'REDIS_CLIENT';
+export const KAFKA_CLIENT = 'KAFKA_CLIENT';
 
 //test
 export const CONCERT_CONCURRENCY_REPOSITORY = 'IConcertDateConcurrency';

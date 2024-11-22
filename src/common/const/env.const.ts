@@ -13,3 +13,7 @@ export const ENV_RUNTIME_KEY = 'RUN_TIME';
 export const ENV_REDIS_PORT_KEY = 'REDIS_PORT';
 
 export const ENV_REDIS_HOST_KEY = 'REDIS_HOST';
+
+export const ENV_KAFKA_BROKERS_KEY = 'KAFKA_BROKERS';
+
+export const ENV_KAFKA_CLIENT_ID_KEY = 'KAFKA_CLIENT_ID';
