@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { PaymentFacade } from '../application/payment.facade';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { PaymentDto } from './dto/req/payment.dto';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { PaymentFacade } from '../application';
+import { PaymentDto } from './dto';
 
 @ApiTags('Payment')
 @Controller('payments')

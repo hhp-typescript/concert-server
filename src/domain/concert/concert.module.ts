@@ -1,27 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConcertFacade } from './application/concert.facade';
-import { ConcertService } from './domain/service/concert.service';
-import { ConcertController } from './presentation/concert.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ConcertEntity } from './infrastructure/entity/concert.typeorm.entity';
-import { ConcertDateEntity } from './infrastructure/entity/concert.date.typeorm.entity';
-import { SeatEntity } from './infrastructure/entity/seat.typeorm.entity';
-
-import {
-  ConcertDateRepositoryImpl,
-  ConcertRepositoryImpl,
-  SeatRepositoryImpl,
-} from './infrastructure/repository';
-import { ConcertConcurrencyFacade } from './application/concert.concurrency.facade';
-import { ConcertDateConcurrencyRepositoryImpl } from './infrastructure/repository/concert.date.concurrency.repository.impl';
-import { SeatConcurrencyRepositoryImpl } from './infrastructure/repository/seat.concurrency.repository.impl';
-import { ConcertConcurrencyService } from './domain/service/concert.concurrency.service';
-import { ConcertOutboxEntity } from './infrastructure/entity/concert.outbox.entity';
-import {
-  ReservationCompleteConsumer,
-  SeatFailOutboxConsumer,
-} from './application/event';
-import { ConcertProducerImpl } from './infrastructure/kafka/concert.producer.impl';
 import {
   CONCERT_PRODUCER,
   CONCERT_REPOSITORY,
@@ -30,6 +8,26 @@ import {
   CONCERT_CONCURRENCY_REPOSITORY,
   SEAT_CONCURRENCY_REPOSITORY,
 } from 'src/common/application';
+import {
+  ConcertFacade,
+  ReservationCompleteConsumer,
+  SeatFailOutboxConsumer,
+  ConcertConcurrencyFacade,
+} from './application';
+import { ConcertService, ConcertConcurrencyService } from './domain';
+import {
+  ConcertEntity,
+  ConcertOutboxEntity,
+  ConcertDateEntity,
+  SeatEntity,
+  ConcertProducerImpl,
+  ConcertRepositoryImpl,
+  ConcertDateRepositoryImpl,
+  SeatRepositoryImpl,
+  ConcertDateConcurrencyRepositoryImpl,
+  SeatConcurrencyRepositoryImpl,
+} from './infrastructure';
+import { ConcertController } from './presentation';
 
 @Module({
   controllers: [ConcertController],

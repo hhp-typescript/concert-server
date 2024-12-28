@@ -1,7 +1,7 @@
-import { Entity, Column, ManyToOne, OneToMany, JoinColumn } from 'typeorm';
-import { BaseEntity } from 'src/common/entities/base-entity';
-import { SeatEntity } from './seat.typeorm.entity';
+import { Entity, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { ConcertEntity } from './concert.typeorm.entity';
+import { SeatEntity } from './seat.typeorm.entity';
+import { BaseEntity } from 'src/common/infrastructure';
 
 @Entity()
 export class ConcertDateEntity extends BaseEntity {

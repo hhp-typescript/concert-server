@@ -1,11 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
+import { BaseRepository } from 'src/common/infrastructure';
 import { EntityManager } from 'typeorm';
-import { BaseRepository } from 'src/common/repository/base.repository';
-import { IConcertDateConcurrencyRepository } from '../../domain/repository/i.concert.date.concurrency.repository';
-import { ConcertDate } from '../../domain/model/concert.date';
-import { ConcertDateMapper } from '../mapper/concert.date.mapper';
-import { ConcertDateEntity } from '../entity/concert.date.typeorm.entity';
+import { IConcertDateConcurrencyRepository, ConcertDate } from '../../domain';
+import { ConcertDateEntity } from '../entity';
+import { ConcertDateMapper } from '../mapper';
 
 @Injectable()
 export class ConcertDateConcurrencyRepositoryImpl

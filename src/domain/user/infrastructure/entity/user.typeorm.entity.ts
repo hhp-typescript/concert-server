@@ -1,6 +1,6 @@
-import { Column, Entity, OneToOne } from 'typeorm';
+import { BaseEntity } from 'src/common/infrastructure';
+import { Entity, Column, OneToOne } from 'typeorm';
 import { PointEntity } from './point.typeorm.entity';
-import { BaseEntity } from 'src/common/entities/base-entity';
 
 @Entity()
 export class UserEntity extends BaseEntity {

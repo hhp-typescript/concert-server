@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { ConcertEntity } from '../entity/concert.typeorm.entity';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { EntityManager } from 'typeorm';
-import { BaseRepository } from 'src/common/repository/base-repository';
-import { IConcertRepository } from '../../domain/repository/i.concert.repository';
-import { Concert } from '../../domain/model/concert';
-import { ConcertMapper } from '../mapper/concert.mapper';
+import { SEAT_REPOSITORY } from 'src/common/application';
+import { OutboxStatus } from 'src/common/domain';
+import { BaseRepository } from 'src/common/infrastructure';
+import { Repository, EntityManager } from 'typeorm';
+import {
+  IConcertRepository,
+  ISeatRepository,
+  Concert,
+  Seat,
+  ConcertOutbox,
+} from '../../domain';
+import { ConcertEntity, ConcertOutboxEntity } from '../entity';
+import { ConcertMapper } from '../mapper';
 
 @Injectable()
 export class ConcertRepositoryImpl

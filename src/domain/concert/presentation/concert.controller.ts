@@ -1,11 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { ConcertFacade } from '../application/concert.facade';
-import {
-  GetAvailableDatesDto,
-  GetAvailableSeatsDto,
-} from './dto/req/concert.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ReserveSeatDto } from './dto/req/reservation.dto';
+import { Controller, Post, Get, Body } from '@nestjs/common';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ConcertFacade } from '../application';
+import { GetAvailableSeatsDto, GetAvailableDatesDto } from './dto';
 
 @ApiTags('Concert')
 @Controller('/concerts')

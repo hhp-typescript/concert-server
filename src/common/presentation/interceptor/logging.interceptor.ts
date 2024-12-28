@@ -1,12 +1,12 @@
 import {
-  CallHandler,
-  ExecutionContext,
-  Logger,
   NestInterceptor,
+  Logger,
+  ExecutionContext,
+  CallHandler,
 } from '@nestjs/common';
-import { appendFile, existsSync, mkdirSync } from 'fs';
+import { existsSync, mkdirSync, appendFile } from 'fs';
 import { Observable, tap } from 'rxjs';
-import { User } from 'src/domain/user/domain/model/user';
+import { User } from 'src/domain/user/domain';
 
 export class LoggingInterceptor implements NestInterceptor {
   private readonly logger = new Logger(LoggingInterceptor.name);

@@ -1,4 +1,4 @@
-import { Seat } from '../model/seat';
+import { Seat } from '../model';
 
 export interface ISeatConcurrencyRepository {
   saveSeat(seat: Seat): Promise<Seat>;

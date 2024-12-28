@@ -1,8 +1,15 @@
-// domain/concert/concert.service.ts
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { CONCERT_REPOSITORY } from 'src/common/const';
-import { IConcertRepository } from '../repository/i.concert.repository';
-import { Concert } from '../model/concert';
+import { Injectable, Inject } from '@nestjs/common';
+import { InjectDataSource } from '@nestjs/typeorm';
+import {
+  CONCERT_REPOSITORY,
+  SEAT_REPOSITORY,
+  CONCERT_PRODUCER,
+} from 'src/common/application';
+import { DataSource } from 'typeorm';
+import { IConcertProducer } from '../event';
+import { Seat, Concert, OutboxStatus } from '../model';
+import { IConcertRepository, ISeatRepository } from '../repository';
+import { NotFoundException } from 'src/common/domain';
 
 @Injectable()
 export class ConcertService {

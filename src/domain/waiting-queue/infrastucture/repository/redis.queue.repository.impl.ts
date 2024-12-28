@@ -1,8 +1,8 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import Redis from 'ioredis';
+import { REDIS_CLIENT } from 'src/common/application';
 import { v4 as uuidv4 } from 'uuid';
-import { REDIS_CLIENT } from 'src/common/const';
-import { IRedisQueueRepository } from '../../domain/repository/i.redis.queue.repository';
+import { IRedisQueueRepository } from '../../domain';
 
 @Injectable()
 export class RedisQueueRepositoryImpl implements IRedisQueueRepository {

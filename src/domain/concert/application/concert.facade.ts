@@ -1,7 +1,6 @@
 // application/concert/concert.facade.ts
 import { Injectable } from '@nestjs/common';
-import { ConcertService } from '../domain/service/concert.service';
-import { ReservationService } from '../domain/service/reservation.service';
+import { ConcertService } from '../domain';
 
 @Injectable()
 export class ConcertFacade {

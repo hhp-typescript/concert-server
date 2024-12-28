@@ -1,6 +1,6 @@
-import { BaseEntity } from 'src/common/entities/base-entity';
-import { Column, Entity } from 'typeorm';
-import { PointHistoryType } from '../../domain/model/point.history';
+import { BaseEntity } from 'src/common/infrastructure';
+import { Entity, Column } from 'typeorm';
+import { PointHistoryType } from '../../domain';
 
 @Entity()
 export class PointHistoryEntity extends BaseEntity {

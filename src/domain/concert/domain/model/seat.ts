@@ -1,3 +1,4 @@
+import { NotFoundException } from 'src/common/domain';
 import { ConcertDate } from './concert.date';
 
 export class Seat {

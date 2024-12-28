@@ -1,11 +1,20 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { POINT_REPOSITORY, USER_REPOSITORY } from 'src/common/const';
+import {
+  USER_REPOSITORY,
+  POINT_REPOSITORY,
+  POINT_HISTORY_REPOSITORY,
+  POINT_PRODUCER,
+} from 'src/common/application';
 import { DataSource } from 'typeorm';
-import { User } from '../model/user';
-import { IUserRepository } from '../repository/i.user.repository';
-import { IPointRepository } from '../repository';
-import { InjectTransactionManager } from 'src/common/lib/decorator/inject.manager.decorator';
+import { IPointProducer } from '../event';
+import { User, PointHistory, OutboxStatus } from '../model';
+import {
+  IUserRepository,
+  IPointRepository,
+  IPointHistoryRepository,
+} from '../repository';
+import { NotFoundException } from 'src/common/domain';
 
 @Injectable()
 export class UserService {

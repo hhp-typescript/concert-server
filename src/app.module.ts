@@ -1,14 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
-import { DatabaseModule } from './core/database/database.module';
-import { UserModule } from './domain/user/user.module';
-import { ConcertModule } from './domain/concert/concert.module';
-import { WaitingQueueModule } from './domain/waiting-queue/waiting-queue.module';
-import { PaymentModule } from './domain/payment/payment.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from './common/interceptor';
+import { AppService } from './app.service';
+import { LoggingInterceptor } from './common/presentation';
+import { DatabaseModule, RedisModule } from './core';
+import { ConcertModule } from './domain/concert/concert.module';
+import { PaymentModule } from './domain/payment/payment.module';
+import { ReservationModule } from './domain/reservation/reservation.module';
+import { UserModule } from './domain/user/user.module';
+import { WaitingQueueModule } from './domain/waiting-queue/waiting.queue.module';
 
 @Module({
   imports: [
@@ -17,10 +18,13 @@ import { LoggingInterceptor } from './common/interceptor';
       isGlobal: true,
     }),
     DatabaseModule,
+    RedisModule,
+
     UserModule,
     ConcertModule,
     WaitingQueueModule,
     PaymentModule,
+    ReservationModule,
   ],
   controllers: [AppController],
   providers: [

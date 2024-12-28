@@ -1,11 +1,10 @@
-import { BaseRepository } from 'src/common/repository/base-repository';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
+import { BaseRepository } from 'src/common/infrastructure';
 import { EntityManager } from 'typeorm';
-import { IPointRepository } from '../../domain/repository';
-import { Point } from '../../domain/model/point';
-import { PointEntity } from '../../infrastructure/entity';
-import { PointMapper } from '../../infrastructure/mapper/point.mapper';
+import { IPointRepository, Point } from '../../domain';
+import { PointEntity } from '../entity';
+import { PointMapper } from '../mapper';
 
 @Injectable()
 export class PointRepositoryImpl

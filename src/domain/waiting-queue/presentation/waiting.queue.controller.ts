@@ -1,6 +1,6 @@
 import { Controller, Post, Param, Get } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { WaitingQueueFacade } from '../application/waiting.queue.facade';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { WaitingQueueFacade } from '../application';
 
 @ApiTags('WaitingQueue')
 @Controller('waiting-queue')

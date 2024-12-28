@@ -1,14 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { PaymentService } from '../domain/service/payment.service';
-import { PointHistoryService } from 'src/domain/user/domain/service/point.history.service';
-import { ReservationService } from 'src/domain/concert/domain/service/reservation.service';
-import { UserService } from 'src/domain/user/domain/service/user.service';
-import { NotFoundException } from 'src/common/domain/exception';
-import { ReservationStatus } from 'src/domain/concert/domain/model/reservation';
-import { InjectDataSource } from '@nestjs/typeorm';
-import { DataSource, EntityManager } from 'typeorm';
 import { IPaymentEventPublisher } from '../domain/event/i.payment.event.publisher';
-import { ConflictException } from 'src/common/domain/exception/conflict.exception';
+import { ReservationService } from 'src/domain/reservation/domain/service/reservation.service';
 
 @Injectable()
 export class PaymentFacade {

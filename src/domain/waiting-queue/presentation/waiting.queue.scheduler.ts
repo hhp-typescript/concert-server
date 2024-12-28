@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { WaitingQueueFacade } from '../application/waiting.queue.facade';
+import { WaitingQueueFacade } from '../application';
 
 @Injectable()
 export class WaitingQueueScheduler {

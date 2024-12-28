@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import {
-  REDIS_QUEUE_REPOSITORY,
-  WAITING_QUEUE_REPOSITORY,
-} from 'src/common/const';
-import { WaitingQueueRepositoryImpl } from './infrastucture/repository/waiting.queue.repository.impl';
-import { WaitingQueueService } from './domain/service/waiting.queue.service';
-import { WaitingQueueController } from './presentation/waiting.queue.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { WaitingQueueEntity } from './infrastucture/entity/waiting.queue.typeorm.entity';
-import { WaitingQueueFacade } from './application/waiting.queue.facade';
-import { WaitingQueueScheduler } from './presentation';
-import { RedisQueueRepositoryImpl } from './infrastucture/repository/redis.queue.repository.impl';
+import {
+  WAITING_QUEUE_REPOSITORY,
+  REDIS_QUEUE_REPOSITORY,
+} from 'src/common/application';
+import { WaitingQueueFacade } from './application';
+import { WaitingQueueService } from './domain';
+import {
+  WaitingQueueEntity,
+  WaitingQueueRepositoryImpl,
+  RedisQueueRepositoryImpl,
+} from './infrastucture';
+import { WaitingQueueController, WaitingQueueScheduler } from './presentation';
 
 @Module({
   imports: [TypeOrmModule.forFeature([WaitingQueueEntity])],
