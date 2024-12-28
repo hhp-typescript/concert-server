@@ -28,11 +28,30 @@ import {
 import { PaymentController } from './presentation';
 
 @Module({
-  imports: [UserModule, ConcertModule, WaitingQueueModule],
+  imports: [
+    ReservationModule,
+    ConcertModule,
+    WaitingQueueModule,
+    EventEmitterModule.forRoot(),
+    TypeOrmModule.forFeature([PaymentEntity, PaymentOutboxEntity]),
+  ],
   controllers: [PaymentController],
   providers: [
     PaymentService,
+    PaymentFacade,
+    PaymentCompleteOutboxConsumer,
+    PointUseFailConsumer,
+    ReservationUpdateFailConsumer,
+    { provide: PAYMENT_PRODUCER, useClass: PaymentProducerImpl },
     { provide: PAYMENT_REPOSITORY, useClass: PaymentRepositoryImpl },
+    {
+      provide: PAYMENT_OUTBOX_REPOSITORY,
+      useClass: PaymentOutboxRepositoryImpl,
+    },
+
+    { provide: 'IPaymentListener', useClass: PaymentEventListener },
+    { provide: 'IPaymentPublisher', useClass: PaymentEventPublisher },
   ],
+  exports: [PaymentService],
 })
 export class PaymentModule {}
