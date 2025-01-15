@@ -1,16 +1,16 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { WaitingQueueEntity } from '../entity/waiting.queue.typeorm.entity';
-import { IWaitingQueueRepository } from '../../domain/repository/i.waiting.queue.repository';
-import { BaseRepository } from 'src/common/infrastructure/repository/base.repository';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
+import { REDIS_QUEUE_REPOSITORY } from 'src/common/application';
+import { BaseRepository } from 'src/common/infrastructure';
 import { EntityManager } from 'typeorm';
 import {
+  IWaitingQueueRepository,
+  IRedisQueueRepository,
   WaitingQueue,
   WaitingQueueStatus,
-} from '../../domain/model/waiting.queue';
-import { WaitingQueueMapper } from '../mapper/waiting.queue.mapper';
-import { REDIS_QUEUE_REPOSITORY } from 'src/common/const';
-import { IRedisQueueRepository } from '../../domain/repository/i.redis.queue.repository';
+} from '../../domain';
+import { WaitingQueueEntity } from '../entity';
+import { WaitingQueueMapper } from '../mapper';
 
 @Injectable()
 export class WaitingQueueRepositoryImpl

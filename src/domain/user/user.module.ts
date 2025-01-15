@@ -1,22 +1,39 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
-  PointEntity,
-  PointHistoryEntity,
-  UserEntity,
-} from './infrastructure/entity';
-import { UserController } from './presentation/user.controller';
-import { UserService } from './domain/service/user.service';
-import { PointRepositoryImpl } from './infrastructure/repository/point.repository.impl';
-import { PointHistoryRepositoryImpl } from './infrastructure/repository/point.history.repository.impl';
-import {
+  USER_REPOSITORY,
   POINT_HISTORY_REPOSITORY,
   POINT_REPOSITORY,
-  USER_REPOSITORY,
-} from 'src/common/const';
-import { PointHistoryService } from './domain/service/point.history.service';
-import { UserFacade } from './application/user.facade';
-import { UserRepositoryImpl } from './infrastructure/repository/user.repository.impl';
+  POINT_PRODUCER,
+  POINT_HISTORY_CONCURRENCY_REPOSITORY,
+  POINT_CONCURRENCY_REPOSITORY,
+} from 'src/common/application';
+import {
+  UserFacade,
+  PointUseCompleteOutBoxConsumer,
+  PointUseFailOutBoxConsumer,
+  ReservationUpdateFailConsumer,
+  PaymentCompleteConsumer,
+  UserConcurrencyFacade,
+} from './application';
+import {
+  UserService,
+  PointHistoryService,
+  UserConcurrencyService,
+} from './domain';
+import {
+  UserEntity,
+  PointEntity,
+  PointHistoryEntity,
+  UserOutboxEntity,
+  UserRepositoryImpl,
+  PointHistoryRepositoryImpl,
+  PointRepositoryImpl,
+  PointProducerImpl,
+  PointHistoryConcurrencyRepositoryImpl,
+  PointConcurrencyRepositoryImpl,
+} from './infrastructure';
+import { UserController } from './presentation';
 
 @Module({
   controllers: [UserController],

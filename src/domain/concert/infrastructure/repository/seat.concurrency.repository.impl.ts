@@ -1,13 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from 'src/common/repository/base.repository';
-import { SeatEntity } from '../entity/seat.typeorm.entity';
 import { InjectEntityManager } from '@nestjs/typeorm';
+import { BaseRepository } from 'src/common/infrastructure';
 import { EntityManager } from 'typeorm';
-import { ISeatConcurrencyRepository } from '../../domain/repository/i.seat.concurrency.repository';
-import { SeatMapper } from '../mapper/seat.mapper';
-import { Seat } from '../../domain/model/seat';
-import { SimpleLock } from 'src/common/lock/simple.lock';
-import { SpinLock } from 'src/common/lock/spin.lock';
+import { ISeatConcurrencyRepository, Seat } from '../../domain';
+import { SeatEntity } from '../entity';
+import { SeatMapper } from '../mapper';
 
 @Injectable()
 export class SeatConcurrencyRepositoryImpl

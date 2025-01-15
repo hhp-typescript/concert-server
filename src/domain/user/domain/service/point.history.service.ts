@@ -1,10 +1,10 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
-import { POINT_HISTORY_REPOSITORY } from 'src/common/const';
-import { DataSource } from 'typeorm';
-import { IPointHistoryRepository } from '../repository';
-import { PointHistory } from '../model/point.history';
+import { POINT_HISTORY_REPOSITORY } from 'src/common/application';
 import { InjectTransactionManager } from 'src/common/lib/decorator/inject.manager.decorator';
+import { DataSource, EntityManager } from 'typeorm';
+import { PointHistory } from '../model';
+import { IPointHistoryRepository } from '../repository';
 
 @Injectable()
 export class PointHistoryService {

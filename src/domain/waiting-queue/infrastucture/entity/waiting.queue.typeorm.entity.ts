@@ -1,6 +1,6 @@
-import { BaseEntity } from 'src/common/entities/base-entity';
+import { BaseEntity } from 'src/common/infrastructure';
 import { Column, Entity } from 'typeorm';
-import { WaitingQueueStatus } from '../../domain/model/waiting.queue';
+import { WaitingQueueStatus } from '../../domain';
 
 @Entity()
 export class WaitingQueueEntity extends BaseEntity {
@@ -20,6 +20,6 @@ export class WaitingQueueEntity extends BaseEntity {
   })
   status: WaitingQueueStatus;
 
-  @Column()
+  @Column({ nullable: true })
   expiresAt: Date;
 }

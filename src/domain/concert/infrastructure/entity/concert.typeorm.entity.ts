@@ -1,6 +1,6 @@
 import { Entity, Column, OneToMany } from 'typeorm';
-import { BaseEntity } from 'src/common/entities/base-entity';
 import { ConcertDateEntity } from './concert.date.typeorm.entity';
+import { BaseEntity } from 'src/common/infrastructure';
 
 @Entity()
 export class ConcertEntity extends BaseEntity {

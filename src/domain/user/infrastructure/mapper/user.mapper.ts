@@ -1,6 +1,6 @@
+import { User } from '../../domain';
+import { UserEntity } from '../entity';
 import { PointMapper } from './point.mapper';
-import { User } from '../../domain/model/user';
-import { UserEntity } from '../entity/user.typeorm.entity';
 
 export class UserMapper {
   static toDomain(entity: UserEntity): User {

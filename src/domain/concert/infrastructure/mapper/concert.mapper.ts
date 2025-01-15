@@ -1,5 +1,5 @@
-import { Concert } from '../../domain/model/concert';
-import { ConcertEntity } from '../entity/concert.typeorm.entity';
+import { Concert } from '../../domain';
+import { ConcertEntity } from '../entity';
 import { ConcertDateMapper } from './concert.date.mapper';
 
 export class ConcertMapper {

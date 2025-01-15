@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { WaitingQueueService } from '../domain/service/waiting.queue.service';
+import { WaitingQueueService } from '../domain';
 
 @Injectable()
 export class WaitingQueueFacade {

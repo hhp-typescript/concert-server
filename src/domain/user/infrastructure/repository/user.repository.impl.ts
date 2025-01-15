@@ -1,11 +1,12 @@
-import { BaseRepository } from 'src/common/repository/base-repository';
-import { UserEntity } from '../entity';
-import { IUserRepository } from '../../domain/repository/i.user.repository';
-import { User } from '../../domain/model/user';
-import { InjectEntityManager } from '@nestjs/typeorm';
-import { EntityManager } from 'typeorm';
-import { UserMapper } from '../mapper/user.mapper';
 import { Injectable } from '@nestjs/common';
+import { InjectEntityManager } from '@nestjs/typeorm';
+import { OutboxStatus } from 'src/common/domain';
+import { BaseRepository } from 'src/common/infrastructure';
+import { Repository, EntityManager } from 'typeorm';
+import { IUserRepository, User, UserOutbox } from '../../domain';
+import { UserEntity } from '../entity';
+import { UserMapper } from '../mapper';
+import { UserOutboxEntity } from '../outbox';
 
 @Injectable()
 export class UserRepositoryImpl

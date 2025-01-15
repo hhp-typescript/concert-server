@@ -1,8 +1,11 @@
-import { PAYMENT_REPOSITORY } from 'src/common/const';
-import { IPaymentRepository } from '../repository/i.payment.repository';
-import { Inject, Injectable } from '@nestjs/common';
-import { Payment } from '../model/payment';
-import { InjectTransactionManager } from 'src/common/lib/decorator/inject.manager.decorator';
+import { Injectable, Inject } from '@nestjs/common';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { PAYMENT_REPOSITORY, PAYMENT_PRODUCER } from 'src/common/application';
+import { DataSource } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
+import { IPaymentProducer } from '../event';
+import { PaymentStatus, OutboxStatus } from '../model';
+import { IPaymentRepository } from '../repository';
 
 @Injectable()
 export class PaymentService {

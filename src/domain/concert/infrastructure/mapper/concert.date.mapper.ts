@@ -1,7 +1,6 @@
-// infra/concert/mapper/concert-date.mapper.ts
-import { ConcertDate } from '../../domain/model/concert.date';
-import { ConcertDateEntity } from '../entity/concert.date.typeorm.entity';
-import { SeatMapper } from './seat.mapper'; // SeatMapper 경로 확인 및 수정
+import { ConcertDate } from '../../domain';
+import { ConcertDateEntity } from '../entity';
+import { SeatMapper } from './seat.mapper';
 
 export class ConcertDateMapper {
   static toDomain(entity: ConcertDateEntity): ConcertDate {

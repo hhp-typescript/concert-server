@@ -1,11 +1,11 @@
-import { BaseRepository } from 'src/common/repository/base.repository';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
+import { BaseRepository } from 'src/common/infrastructure';
 import { EntityManager } from 'typeorm';
-import { IPointConcurrencyRepository } from '../../domain/repository/i.point.concurrency.repository';
-import { PointMapper } from '../mapper/point.mapper';
+import { IPointConcurrencyRepository } from '../../domain';
+import { Point } from '../../domain';
 import { PointEntity } from '../entity';
-import { Point } from '../../domain/model/point';
+import { PointMapper } from '../mapper';
 
 @Injectable()
 export class PointConcurrencyRepositoryImpl

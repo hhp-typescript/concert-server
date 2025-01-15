@@ -1,4 +1,5 @@
-import { Concert } from '../model/concert';
+import { EntityManager } from 'typeorm';
+import { Concert, Seat, ConcertOutbox, OutboxStatus } from '../model';
 
 export interface IConcertRepository {
   getConcertByConcertDateId(

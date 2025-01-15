@@ -1,4 +1,5 @@
-import { Seat } from '../model/seat';
+import { EntityManager } from 'typeorm';
+import { Seat } from '../model';
 
 export interface ISeatRepository {
   getSeatById(seatId: number): Promise<Seat | null>;

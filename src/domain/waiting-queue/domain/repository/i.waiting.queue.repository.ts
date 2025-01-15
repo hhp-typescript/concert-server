@@ -1,4 +1,4 @@
-import { WaitingQueue } from '../model/waiting.queue';
+import { WaitingQueue } from '../model';
 
 export interface IWaitingQueueRepository {
   issueToken(concertDateId: number): Promise<string>;

@@ -1,5 +1,6 @@
-import { BaseEntity } from 'src/common/entities/base-entity';
-import { Column, Entity } from 'typeorm';
+import { Entity, Column } from 'typeorm';
+import { PaymentStatus } from '../../domain';
+import { BaseEntity } from 'src/common/infrastructure';
 
 @Entity('payments')
 export class PaymentEntity extends BaseEntity {

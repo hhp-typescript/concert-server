@@ -1,4 +1,4 @@
-import { PointHistory } from '../model/point.history';
+import { PointHistory } from '../model';
 
 export interface IPointHistoryConcurrencyRepository {
   LogHistory(pointHistory: PointHistory): Promise<void>;

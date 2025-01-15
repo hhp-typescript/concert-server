@@ -8,7 +8,7 @@ import {
   ENV_DB_PORT_KEY,
   ENV_DB_USERNAME_KEY,
   ENV_RUNTIME_KEY,
-} from 'src/common/const';
+} from '../const';
 
 @Module({
   imports: [
@@ -25,6 +25,9 @@ import {
           database: configService.get<string>(ENV_DB_DATABASE_KEY),
           autoLoadEntities: true,
           logging: true,
+          extra: {
+            connectionLimit: 25,
+          },
           synchronize:
             configService.get<string>(ENV_RUNTIME_KEY) === 'development',
         };

@@ -1,8 +1,11 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { IWaitingQueueRepository } from '../repository/i.waiting.queue.repository';
-import { WAITING_QUEUE_REPOSITORY } from 'src/common/const';
-import { WaitingQueue } from '../model/waiting.queue';
-import { NotFoundException } from 'src/common/domain/exception';
+import { Injectable, Inject } from '@nestjs/common';
+import { WAITING_QUEUE_REPOSITORY } from 'src/common/application';
+import {
+  InternalServerErrorException,
+  NotFoundException,
+} from 'src/common/domain';
+import { WaitingQueue } from '../model';
+import { IWaitingQueueRepository } from '../repository';
 
 @Injectable()
 export class WaitingQueueService {

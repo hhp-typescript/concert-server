@@ -1,17 +1,18 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import {
   POINT_CONCURRENCY_REPOSITORY,
   POINT_HISTORY_CONCURRENCY_REPOSITORY,
-} from 'src/common/const';
-import { DataSource } from 'typeorm';
-
-import { IPointConcurrencyRepository } from '../repository/i.point.concurrency.repository';
-import { IPointHistoryConcurrencyRepository } from '../repository/i.point.history.concurrency.repository';
+} from 'src/common/application';
 import { InjectTransactionManager } from 'src/common/lib/decorator/inject.manager.decorator';
 import { Transactional } from 'src/common/lib/decorator/transaction.decorator';
-import { NotFoundException } from 'src/common/exception';
-import { PointHistory } from '../model/point.history';
+import { DataSource } from 'typeorm';
+import { PointHistory } from '../model';
+import {
+  IPointConcurrencyRepository,
+  IPointHistoryConcurrencyRepository,
+} from '../repository';
+import { NotFoundException } from 'src/common/domain';
 
 @Injectable()
 export class UserConcurrencyService {

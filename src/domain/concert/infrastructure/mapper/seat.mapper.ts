@@ -1,6 +1,6 @@
-import { Seat } from '../../domain/model/seat';
-import { SeatEntity } from '../entity/seat.typeorm.entity';
-import { ConcertDateMapper } from './concert.date.mapper'; // ConcertDate를 변환하기 위한 Mapper 추가
+import { Seat } from '../../domain';
+import { SeatEntity } from '../entity';
+import { ConcertDateMapper } from './concert.date.mapper';
 
 export class SeatMapper {
   static toDomain(entity: SeatEntity): Seat {

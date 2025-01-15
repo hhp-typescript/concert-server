@@ -1,14 +1,13 @@
-import { OnModuleInit, OnModuleDestroy, Inject } from '@nestjs/common';
-import { Kafka, Partitioners, Producer } from 'kafkajs';
-import { KAFKA_CLIENT } from 'src/common/const';
+import { OnModuleInit, OnModuleDestroy } from '@nestjs/common';
+import { Kafka, Partitioners, Producer, ProducerRecord } from 'kafkajs';
+import { kafkaConfig } from './kafka.config';
 
-export abstract class BaseKafkaProducer
-  implements OnModuleInit, OnModuleDestroy
-{
+export class BaseKafkaProducer implements OnModuleInit, OnModuleDestroy {
+  private kafka: Kafka;
   private readonly producer: Producer;
-
-  constructor(@Inject(KAFKA_CLIENT) protected readonly kafka: Kafka) {
-    this.producer = kafka.producer({
+  constructor() {
+    this.kafka = new Kafka(kafkaConfig);
+    this.producer = this.kafka.producer({
       createPartitioner: Partitioners.LegacyPartitioner,
     });
   }
@@ -28,10 +27,7 @@ export abstract class BaseKafkaProducer
   }
 
   // 메시지 전송
-  async sendMessage(topic: string, key: string, value: any) {
-    await this.producer.send({
-      topic,
-      messages: [{ key, value: JSON.stringify(value) }],
-    });
+  async sendMessage(record: ProducerRecord) {
+    await this.producer.send(record);
   }
 }

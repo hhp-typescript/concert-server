@@ -1,11 +1,10 @@
-import { BaseRepository } from 'src/common/repository/base-repository';
-import { PointHistoryEntity } from '../entity';
 import { Injectable } from '@nestjs/common';
 import { InjectEntityManager } from '@nestjs/typeorm';
+import { BaseRepository } from 'src/common/infrastructure';
 import { EntityManager } from 'typeorm';
-import { IPointHistoryRepository } from '../../domain/repository';
-import { PointHistory } from '../../domain/model/point.history';
-import { PointHistoryMapper } from '../mapper/point.history.mapper';
+import { IPointHistoryRepository, PointHistory } from '../../domain';
+import { PointHistoryEntity } from '../entity';
+import { PointHistoryMapper } from '../mapper';
 
 @Injectable()
 export class PointHistoryRepositoryImpl

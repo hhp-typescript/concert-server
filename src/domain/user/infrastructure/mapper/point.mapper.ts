@@ -1,5 +1,5 @@
-import { Point } from '../../domain/model/point';
-import { PointEntity } from '../entity/point.typeorm.entity';
+import { Point } from '../../domain';
+import { PointEntity } from '../entity';
 
 export class PointMapper {
   static toDomain(entity: PointEntity): Point {

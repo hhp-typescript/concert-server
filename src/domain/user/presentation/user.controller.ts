@@ -1,11 +1,10 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Controller, UseInterceptors, Get, Body, Post } from '@nestjs/common';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ResponseInterceptor } from 'src/common/presentation';
+import { UserFacade, UserConcurrencyFacade } from '../application';
+import { User } from '../domain';
+import { GetPointDto, ChargetPointDto } from './dto';
 
-import { UserFacade } from '../application/user.facade';
-import { ChargetPointDto, GetPointDto } from './dto/req';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-
-//TODO:response추가.
-//TODO exception filter 추가
 @ApiTags('User')
 @Controller('users')
 export class UserController {

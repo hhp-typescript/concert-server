@@ -1,4 +1,4 @@
-import { PointHistory } from '../../domain/model/point.history';
+import { PointHistory } from '../../domain';
 import { PointHistoryEntity } from '../entity';
 
 export class PointHistoryMapper {

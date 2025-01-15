@@ -1,10 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserService } from '../domain/service/user.service';
-import { Transactional } from 'src/common/lib/decorator/transaction.decorator';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { PointHistoryService } from '../domain/service/point.history.service';
-import { InjectTransactionManager } from 'src/common/lib/decorator/inject.manager.decorator';
+import { UserService, PointHistoryService } from '../domain';
 
 @Injectable()
 export class UserFacade {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { ConcertFacade } from '../application/concert.facade';
+import { ConcertFacade } from '../application';
 
 @Injectable()
 export class ReservationExpiryScheduler {

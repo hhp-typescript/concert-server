@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { UserConcurrencyService } from '../domain/service/user.concurrency.service';
+import { UserConcurrencyService } from '../domain';
 
 @Injectable()
 export class UserConcurrencyFacade {

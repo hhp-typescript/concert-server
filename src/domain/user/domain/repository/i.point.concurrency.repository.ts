@@ -1,4 +1,4 @@
-import { Point } from '../model/point';
+import { Point } from '../model';
 
 export interface IPointConcurrencyRepository {
   getPointByUserIdWithLock(userId: number): Promise<Point | null>;

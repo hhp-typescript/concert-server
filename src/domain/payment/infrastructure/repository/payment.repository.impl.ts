@@ -1,11 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRepository } from 'src/common/repository/base-repository';
-import { EntityManager } from 'typeorm';
-import { IPaymentRepository } from '../../domain/repository/i.payment.repository';
 import { InjectEntityManager } from '@nestjs/typeorm';
-import { PaymentEntity } from '../entity/payment.typeorm.entity';
-import { Payment } from '../../domain/model/payment';
-import { PaymentMapper } from '../mapper/payment.mappter';
+import { OutboxStatus } from 'src/common/domain';
+import { BaseRepository } from 'src/common/infrastructure';
+import { Repository, EntityManager } from 'typeorm';
+import {
+  IPaymentRepository,
+  PaymentStatus,
+  Payment,
+  PaymentOutbox,
+} from '../../domain';
+import { PaymentEntity } from '../entity';
+import { PaymentMapper } from '../mapper';
+import { PaymentOutboxEntity } from '../outbox';
 
 @Injectable()
 export class PaymentRepositoryImpl

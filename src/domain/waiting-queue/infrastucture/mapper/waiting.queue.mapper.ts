@@ -1,5 +1,5 @@
-import { WaitingQueue } from '../../domain/model/waiting.queue';
-import { WaitingQueueEntity } from '../entity/waiting.queue.typeorm.entity';
+import { WaitingQueue } from '../../domain';
+import { WaitingQueueEntity } from '../entity';
 
 export class WaitingQueueMapper {
   static toDomain(entity: WaitingQueueEntity): WaitingQueue {
