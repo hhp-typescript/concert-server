@@ -22,45 +22,35 @@ export class ReservationService {
     private readonly dataSource: DataSource,
   ) {}
 
-  async craeteReservation(concertDateId: number, seat: Seat, userId: number) {
-    const queryRunner = this.dataSource.createQueryRunner();
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
+  async createReservation(
+    concertDateId: number,
+    seatId: number,
+    userId: number,
+    transactionId: string,
+  ) {
     try {
-      const txReservationRepo = this.reservationRepo.createTransactionRepo(
-        queryRunner.manager,
-      );
-      const savedReservation = await txReservationRepo.createReservation(
+      const reservation = await this.reservationRepo.createReservation(
         concertDateId,
-        seat,
+        seatId,
         userId,
       );
 
-      const eventType = 'RESERVATION_COMPLETED';
-      const transactionId = uuidv4();
-
+      return reservation;
+    } catch (error) {
+      const eventType = 'RESERVATION_FAILED';
       const payload = {
-        reservationId: savedReservation.id,
-        seatId: seat.id,
         transactionId,
         eventTime: new Date().toISOString(),
       };
 
-      await txReservationRepo.saveOutbox(eventType, payload);
-      await queryRunner.commitTransaction();
-
+      await this.reservationRepo.saveOutbox(eventType, payload);
       await this.reservationProducer.publishEvent(eventType, [
         { value: JSON.stringify(payload) },
       ]);
-
-      return savedReservation;
-    } catch (error) {
-      await queryRunner.rollbackTransaction();
       throw error;
-    } finally {
-      await queryRunner.release();
     }
   }
+
   async getReservationByUserId(userId: number) {
     const reservation =
       await this.reservationRepo.getReservationByUserId(userId);
@@ -81,7 +71,6 @@ export class ReservationService {
     return reservation;
   }
 
-  // @InjectTransactionManager(['reservationRepo'])
   async updateReservation(reservation: Reservation) {
     await this.reservationRepo.saveReservation(reservation);
   }
@@ -120,23 +109,5 @@ export class ReservationService {
 
   async updateOutboxStatus(transactionId: string, status: OutboxStatus) {
     await this.reservationRepo.updateOutboxStatus(transactionId, status);
-  }
-
-  async failReservation(transactionId: string) {
-    const outbox =
-      await this.reservationRepo.findOutboxByTransactionId(transactionId);
-
-    if (!outbox) {
-      throw new Error('Reservation outbox not found');
-    }
-
-    const {
-      payload: { reservationId },
-    } = outbox;
-
-    await this.reservationRepo.updateReservationStatus(
-      reservationId,
-      ReservationStatus.EXPIRED,
-    );
   }
 }

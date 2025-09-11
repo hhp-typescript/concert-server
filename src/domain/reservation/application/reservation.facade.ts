@@ -12,14 +12,4 @@ export class ReservationFacade {
   async getReservationByUserId(userId: number) {
     return await this.reservationService.getReservationByUserId(userId);
   }
-
-  async reserve(concertDateId: number, seatId: number, userId: number) {
-    const seat = await this.concertService.getSeatById(seatId);
-
-    await this.reservationService.craeteReservation(
-      concertDateId,
-      seat,
-      userId,
-    );
-  }
 }
