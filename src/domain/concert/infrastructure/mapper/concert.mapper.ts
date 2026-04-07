@@ -1,23 +1,28 @@
-import { Concert } from '../../domain';
+import { Concert, ConcertId, PersistedConcertProps } from '../../domain';
 import { ConcertEntity } from '../entity';
-import { ConcertDateMapper } from './concert.date.mapper';
 
 export class ConcertMapper {
   static toDomain(entity: ConcertEntity): Concert {
-    return new Concert({
-      id: entity.id,
+    if (!entity) return null;
+
+    const props: PersistedConcertProps = {
+      id: ConcertId.of(entity.id),
       name: entity.name,
       description: entity.description,
-      concertDates: entity.concertDates.map(ConcertDateMapper.toDomain),
-    });
+    };
+
+    return Concert.reconstitute(props);
   }
 
-  static toEntity(concert: Concert): ConcertEntity {
+  static toEntity(domain: Concert): ConcertEntity {
+    if (!domain) return null;
+
     const entity = new ConcertEntity();
-    entity.id = concert.id;
-    entity.name = concert.name;
-    entity.description = concert.description;
-    entity.concertDates = concert.concertDates.map(ConcertDateMapper.toEntity);
+
+    if (domain.hasId()) entity.id = domain.id.getValue();
+    entity.name = domain.name;
+    entity.description = domain.description;
+
     return entity;
   }
 }

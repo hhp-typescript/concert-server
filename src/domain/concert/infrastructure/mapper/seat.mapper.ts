@@ -1,24 +1,36 @@
-import { Seat } from '../../domain';
+import { PersistedSeatProps, Seat, SeatStatus } from '../../domain';
+import { ConcertDateId } from '../../domain/model/concert.date.id.vo';
+import { SeatId } from '../../domain/model/seat.id.vo';
 import { SeatEntity } from '../entity';
-import { ConcertDateMapper } from './concert.date.mapper';
 
 export class SeatMapper {
   static toDomain(entity: SeatEntity): Seat {
-    return new Seat({
-      id: entity.id,
-      price: entity.price,
-      concertDate: ConcertDateMapper.toDomain(entity.concertDate), // ConcertDateEntity -> ConcertDate 변환
+    if (!entity) return null;
+
+    const props: PersistedSeatProps = {
+      id: SeatId.of(entity.id),
       seatNumber: entity.seatNumber,
-      isReserved: entity.isReserved,
-    });
+      price: entity.price,
+      status: entity.status as SeatStatus,
+      concertDateId: ConcertDateId.of(entity.concertDateId),
+      version: entity.version,
+    };
+
+    return Seat.reconstitute(props);
   }
 
-  static toEntity(seat: Seat): SeatEntity {
+  static toEntity(domain: Seat): SeatEntity {
+    if (!domain) return null;
+
     const entity = new SeatEntity();
-    entity.id = seat.id;
-    entity.price = seat.price;
-    entity.concertDate = ConcertDateMapper.toEntity(seat.concertDate); // ConcertDate -> ConcertDateEntity 변환
-    entity.isReserved = seat.isReserved;
+
+    if (domain.hasId()) entity.id = domain.id.getValue();
+    entity.seatNumber = domain.seatNumber;
+    entity.price = domain.price;
+    entity.status = domain.status;
+    entity.version = domain.version;
+    entity.concertDateId = domain.concertDateId.getValue();
+
     return entity;
   }
 }

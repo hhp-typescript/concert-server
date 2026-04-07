@@ -1,18 +1,25 @@
-import { PointHistory } from '../../domain';
+import { PointHistory, pointHistoryProps } from '../../domain';
 import { PointHistoryEntity } from '../entity';
 
 export class PointHistoryMapper {
   static toDomain(entity: PointHistoryEntity) {
-    const { id, userId, amount, type } = entity;
-    return new PointHistory({ id, userId, amount, type });
+    if (!entity) return null;
+
+    const props: pointHistoryProps = {
+      ...entity,
+    };
+
+    return new PointHistory(props);
   }
 
   static toEntity(domain: PointHistory): PointHistoryEntity {
-    const entity = new PointHistoryEntity();
-    entity.id = domain.id;
-    entity.userId = domain.userId;
-    entity.amount = domain.amount;
-    entity.type = domain.type;
-    return entity;
+    const props: pointHistoryProps = {
+      id: domain.id,
+      userId: domain.userId,
+      amount: domain.amount,
+      type: domain.type,
+    };
+
+    return Object.assign(new PointHistoryEntity(), props);
   }
 }

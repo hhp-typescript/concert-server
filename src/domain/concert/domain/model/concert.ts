@@ -1,38 +1,41 @@
-import { ConcertDate } from './concert.date';
+import { ConcertId } from './concert.id.vo';
 
-export class Concert {
-  id: number;
+export type NewConcertProps = {
   name: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
-  concertDates: ConcertDate[];
+};
+export type PersistedConcertProps = {
+  id: ConcertId;
+  name: string;
+  description: string;
+};
+export type concertProps = NewConcertProps | PersistedConcertProps;
 
-  constructor(args: {
-    id?: number;
-    name: string;
-    description: string;
-    concertDates?: ConcertDate[];
-  }) {
-    this.id = args.id;
-    this.name = args.name;
-    this.description = args.description;
-    this.concertDates = args.concertDates || [];
+export class Concert {
+  private constructor(private props: concertProps) {}
+
+  static createNew(props: NewConcertProps): Concert {
+    return new Concert(props);
   }
 
-  getAvailableSeats(concertDateId: number): void {
-    const concertDate = this.concertDates.find(
-      (concertDate) => concertDate.id === concertDateId,
-    );
-    if (!concertDate) {
-      throw new Error('콘서트가 조회되지 않습니다.');
-    }
-    concertDate.getAvailableSeats();
+  static reconstitute(props: PersistedConcertProps): Concert {
+    return new Concert(props);
+  }
+  hasId(): boolean {
+    return 'id' in this.props;
   }
 
-  getAvailableConcertDates(): void {
-    this.concertDates = this.concertDates.filter((concertDate) =>
-      concertDate.isReservationAvailable(),
-    );
+  get id(): ConcertId {
+    if (!('id' in this.props)) throw new Error('id가 없는 Concert');
+
+    return this.props.id;
+  }
+
+  get description(): string {
+    return this.props.description;
+  }
+
+  get name(): string {
+    return this.props.name;
   }
 }

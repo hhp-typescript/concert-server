@@ -1,33 +1,39 @@
-export class PointHistory {
-  id: number;
-  userId: number;
-  amount: number;
-  type: PointHistoryType;
-
-  constructor(args: {
-    id?: number;
-    userId: number;
-    amount?: number;
-    type?: PointHistoryType;
-  }) {
-    this.id = args.id;
-    this.userId = args.userId;
-    this.amount = args.amount;
-    this.type = args.type;
-  }
-
-  logCharge(amount: number): void {
-    this.amount = amount;
-    this.type = PointHistoryType.CHARGE;
-  }
-
-  logUsage(amount: number): void {
-    this.amount = amount;
-    this.type = PointHistoryType.USE;
-  }
-}
-
 export enum PointHistoryType {
   CHARGE = 'CHARGE',
   USE = 'USE',
+}
+
+export type pointHistoryProps = {
+  id?: number;
+  userId: number;
+  amount: number;
+  type: PointHistoryType;
+};
+
+export class PointHistory {
+  constructor(private props: pointHistoryProps) {}
+
+  static createPointHistory(
+    userId: number,
+    amount: number,
+    type: PointHistoryType,
+  ): PointHistory {
+    return new PointHistory({ userId, amount, type });
+  }
+
+  get id(): number {
+    return this.props.id;
+  }
+
+  get userId(): number {
+    return this.props.userId;
+  }
+
+  get amount(): number {
+    return this.props.amount;
+  }
+
+  get type(): PointHistoryType {
+    return this.props.type;
+  }
 }

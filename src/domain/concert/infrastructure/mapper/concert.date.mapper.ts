@@ -1,29 +1,37 @@
-import { ConcertDate } from '../../domain';
+import {
+  ConcertDate,
+  ConcertId,
+  PersistedConcertDateProps,
+} from '../../domain';
+import { ConcertDateId } from '../../domain/model/concert.date.id.vo';
 import { ConcertDateEntity } from '../entity';
-import { SeatMapper } from './seat.mapper';
 
 export class ConcertDateMapper {
   static toDomain(entity: ConcertDateEntity): ConcertDate {
-    return new ConcertDate({
-      id: entity.id,
-      concertId: entity.concert.id, // concertId가 아닌 관계에서 가져와야 함
+    if (!entity) return null;
+
+    const props: PersistedConcertDateProps = {
+      id: ConcertDateId.of(entity.id),
       date: entity.date,
       ticketOpenDate: entity.ticketOpenDate,
       totalSeats: entity.totalSeats,
-      reservedSeats: entity.reservedSeats,
-      seats: entity.seats.map(SeatMapper.toDomain),
-    });
+      concertId: ConcertId.of(entity.concertId),
+    };
+
+    return ConcertDate.reconstitute(props);
   }
 
-  static toEntity(concertDate: ConcertDate): ConcertDateEntity {
+  static toEntity(domain: ConcertDate): ConcertDateEntity {
+    if (!domain) return null;
+
     const entity = new ConcertDateEntity();
-    entity.id = concertDate.id;
-    entity.concert = { id: concertDate.concertId } as any; // concertId로 설정하려면 객체로 감싸서 설정
-    entity.date = concertDate.date;
-    entity.ticketOpenDate = concertDate.ticketOpenDate;
-    entity.totalSeats = concertDate.totalSeats;
-    entity.reservedSeats = concertDate.reservedSeats;
-    entity.seats = concertDate.seats.map(SeatMapper.toEntity);
+
+    if (domain.hasId()) entity.id = domain.id.getValue();
+
+    entity.date = domain.date;
+    entity.ticketOpenDate = domain.ticketOpenDate;
+    entity.totalSeats = domain.totalSeats;
+    entity.concertId = domain.concertId.getValue();
     return entity;
   }
 }

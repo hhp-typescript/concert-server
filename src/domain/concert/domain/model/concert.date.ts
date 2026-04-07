@@ -1,45 +1,65 @@
-import { Seat } from './seat';
+import { ConcertDateId } from './concert.date.id.vo';
+import { ConcertId } from './concert.id.vo';
 
-export class ConcertDate {
-  id: number;
-  concertId: number;
+export type NewConcertDateProps = {
   date: Date;
   ticketOpenDate: Date;
-  seats: Seat[];
   totalSeats: number;
-  reservedSeats: number;
+  concertId: ConcertId;
+};
 
-  constructor(args: {
-    id?: number;
-    concertId: number;
-    date: Date;
-    ticketOpenDate: Date;
-    seats?: Seat[];
-    totalSeats: number;
-    reservedSeats?: number;
-  }) {
-    this.id = args.id;
-    this.concertId = args.concertId;
-    this.date = args.date;
-    this.ticketOpenDate = args.ticketOpenDate;
-    this.seats = args.seats || [];
-    this.totalSeats = args.totalSeats;
-    this.reservedSeats = args.reservedSeats || 0;
-  }
-  reserveSeat(): void {
-    this.reservedSeats += 1;
-  }
+export type PersistedConcertDateProps = {
+  id: ConcertDateId;
+  date: Date;
+  ticketOpenDate: Date;
+  totalSeats: number;
+  concertId: ConcertId;
+};
 
-  releaseSeat(): void {
-    this.reservedSeats -= 1;
+export type ConcertDateProps = NewConcertDateProps | PersistedConcertDateProps;
+
+export class ConcertDate {
+  private constructor(private readonly props: ConcertDateProps) {}
+
+  static createNew(props: NewConcertDateProps): ConcertDate {
+    return new ConcertDate({
+      date: props.date,
+      ticketOpenDate: props.ticketOpenDate,
+      totalSeats: props.totalSeats,
+      concertId: props.concertId,
+    });
   }
 
-  getAvailableSeats(): void {
-    this.seats = this.seats.filter((seat) => !seat.isReserved);
+  static reconstitute(props: PersistedConcertDateProps): ConcertDate {
+    return new ConcertDate(props);
   }
 
+  hasId(): boolean {
+    return 'id' in this.props;
+  }
+
+  get id(): ConcertDateId {
+    if (!('id' in this.props)) {
+      throw new Error('id가 없는 ConcertDate');
+    }
+    return this.props.id;
+  }
   isReservationAvailable(): boolean {
     const now = new Date();
-    return now >= this.ticketOpenDate && now <= this.date;
+    return now >= this.props.ticketOpenDate && now <= this.props.date;
+  }
+
+  get date(): Date {
+    return this.props.date;
+  }
+  get ticketOpenDate(): Date {
+    return this.props.ticketOpenDate;
+  }
+  get totalSeats(): number {
+    return this.props.totalSeats;
+  }
+
+  get concertId(): ConcertId {
+    return this.props.concertId;
   }
 }
